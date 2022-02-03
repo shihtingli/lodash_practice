@@ -76,3 +76,43 @@ const shout = compose(exclaim, toUpperCase)
 shout('send in the clowns')
 // => SEND IN THE CLOWNS !
 console.log(shout('send in the clowns'))
+
+const addABC: (x: string) => string = (x) => `${x} ABC`
+
+const pipe = require('lodash/fp/pipe')
+const _add = require('lodash/fp/add')
+
+const squareFn: (x: number) => number = (x: number) => x * x
+const addSquare = pipe(_add, squareFn)
+addSquare(1, 2)
+// => 9
+console.log(addSquare(1, 2))
+
+const f: (x: number) => number = (x) => x + 3
+const ary = Array.of(1, 2, 3)
+const mapOver = ary.map(f)
+// => x  =>  x+3
+// => Array.of(1, 2, 3) => Array.of(1+3, 2+3, 3+3)
+
+console.log(mapOver)
+
+// const f: (x: number) => number = (x) => x + 3
+
+const Box = (x) => ({
+  map: (f) => Box(f(x)),
+  value: x
+})
+Box.of = (x) => Box(x)
+
+const F_Box = (fn) => ({
+  ap: (other) => other.map(fn)
+})
+const F_f = F_Box(f)
+F_f.ap([1, 2, 3])
+// [4,5,6]
+F_f.ap(Box.of(2))
+// { map: [λ: map], value: 5 }
+
+console.log(Box.of('a'))
+
+Box('a').map((x) => x.toUpperCase()).value //'A

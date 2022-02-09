@@ -1,3 +1,7 @@
+/*
+PURE Function
+*/
+
 var xs = [1, 2, 3, 4, 5]
 
 // pure（
@@ -22,10 +26,10 @@ xs.splice(0, 3)
 //=> []
 
 // no side effect
-const add = (a, b) => a + b
+const add = (a: string, b: string) => a + b
 
 // side effect
-const add_side_effect = (a, b) => {
+const add_side_effect = (a: string, b: string) => {
   console.log('this side effect')
   return a + b
 }

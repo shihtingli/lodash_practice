@@ -238,6 +238,21 @@ const getAsynTE = async () => {
 }
 getAsynTE()
 
+const test1 = pipe(
+  TE.tryCatch(asyncFunction, (e) => new Error(`${e}`)),
+  TE.map((s) => `${s} !`)
+)
+test1().then((x) => {
+  const a = pipe(
+    x,
+    E.match(
+      (e) => `${e}`,
+      (d) => `${d}`
+    )
+  )
+  console.log(a)
+})
+
 const asyncFunctionR = () =>
   new Promise((resolve, reject) => {
     setTimeout(() => {

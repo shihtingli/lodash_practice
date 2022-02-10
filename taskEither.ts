@@ -15,7 +15,9 @@ const result = pipe(
     throw Error(`${e}`)
   }, T.of)
 )
-result().then((x) => console.log(x))
+result().then(
+  (x) => console.log(x) // { code: 200, description: 'OK' }
+)
 
 // const asyncFn = async () => {
 //   const result = await pipe(

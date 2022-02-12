@@ -1,22 +1,32 @@
 import axios from 'axios'
 import * as TE from 'fp-ts/TaskEither'
 import * as T from 'fp-ts/Task'
+import * as E from 'fp-ts/Either'
 
 import { pipe, unsafeCoerce } from 'fp-ts/lib/function'
 
 type Resp = { code: number; description: string }
 const result = pipe(
   TE.tryCatch(
-    () => axios.get('https://httpstat.us/200'),
+    () => axios.get('https://httpstat.us/500'),
     (e) => e
   ),
-  TE.map((resp) => unsafeCoerce<unknown, Resp>(resp.data)),
-  TE.fold((e) => {
-    throw Error(`${e}`)
-  }, T.of)
+  TE.map((resp) => unsafeCoerce<unknown, Resp>(resp.data))
+  // TE.fold((e) => {
+  //   throw Error(`${e}`)
+  // }, T.of)
 )
 result().then(
-  (x) => console.log(x) // { code: 200, description: 'OK' }
+  // (x) => console.log(x)
+  (x) => {
+    pipe(
+      x,
+      E.match(
+        (e) => console.log(e),
+        (r) => console.log(r) // { code: 200, description: 'OK' }
+      )
+    )
+  }
 )
 
 // const asyncFn = async () => {

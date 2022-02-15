@@ -174,6 +174,30 @@ const a = pipe(
 
 console.log(a)
 
+/*
+Application
+*/
+
+const curryFn: (who: string) => (saySomething: string) => string =
+  (who: string) => (something: string) =>
+    `${who} says ${something}`
+
+const mapResult = pipe(O.of('Tommy'), O.map(curryFn))
+console.log(mapResult)
+//{ _tag: 'Some', value: [λ] }
+//{ _tag: 'Some', value: (something: string) =>`Tommy says ${something}` }
+
+const who = O.of('Tommy')
+const saySomething = O.of('Hi')
+const apResult = pipe(O.of(curryFn), O.ap(who), O.ap(saySomething))
+
+console.log(apResult)
+//{ _tag: 'Some', value: 'Tommy says Hi' }
+
+/*
+Either
+*/
+
 import * as E from 'fp-ts/Either'
 
 const str_add_two: (a: string) => E.Either<string, number> = (a: string) => {
